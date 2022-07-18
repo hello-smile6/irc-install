@@ -1,0 +1,22 @@
+{
+  "name": "solanum-installer",
+  "version": "1.0.0",
+  "description": "Automating installation of the Solanum IRCd",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.9pfs.repl.co/9pfs/irc-install/"
+  },
+  "keywords": [
+    "irc",
+    "solanum"
+  ],
+  "author": "hellosmile6@tilde.team",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "ora": "^6.1.2"
+  }
+}
