@@ -17,7 +17,7 @@ const gitAvailableSpinner=ora("Looking for Git");
 gitAvailableSpinner.start();
 import child_process from 'child_process';
 var gitCheck=child_process.spawnSync("which",["git"]);
-if(gitCheck?.error instanceof Error) {
+if(gitCheck?.error instanceof Error || gitCheck?.status==null) {
   gitAvailableSpinner.fail("We couldn't check for Git.");
   process.exit(1);
 }
@@ -26,5 +26,35 @@ if(gitCheck?.status>0) {
   process.exit(1);
 };
 if(gitCheck.status==0) {
-  gitAvailableSpinner.succeed(`We found Git: ${new String(gitCheck.stdout)}`);
+  gitAvailableSpinner.succeed(`We found Git: ${new String(gitCheck.stdout).replace(/\n/,"")}`);
+}
+// From now on, we can safely use Git.
+import fs from 'fs';
+var baseDirSpinner=ora("Determining source path");
+baseDirSpinner.start();
+import path from 'path';
+import { Stream } from 'stream';
+var baseDir=(()=>{switch(process.env?.REPLIT_ENVIRONMENT=="production") {
+  case true:
+    return path.join(process.env?.HOME,process.env.REPL_SLUG,"src/");
+    break;
+  case false:
+    return path.join(process.env?.HOME,"src/");
+  default:
+    break;
+};})();
+baseDirSpinner.succeed(`Installing to ${baseDir}`);
+var baseDirCheckSpinner=ora("Checking your source directory...");
+var baseDirExists=fs.existsSync(baseDir);
+if(baseDirExists) {
+  var baseDirStat=fs.statSync(baseDir);
+  if(baseDirStat.isDirectory) {
+    baseDirCheckSpinner.warn("The source directory already exists!");
+  }
+  else if(baseDirStat.isSymbolicLink) {
+    baseDirCheckSpinner.warn(`The source directory is a symlink to ${new String(child_process.spawnSync("readlink",baseDir).stdout)}.`);
+  }
+}
+else {
+  baseDirCheckSpinner.succeed("Your source directory is good to go!");
 }
