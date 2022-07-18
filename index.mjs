@@ -58,3 +58,17 @@ if(baseDirExists) {
 else {
   baseDirCheckSpinner.succeed("Your source directory is good to go!");
 }
+var srcCreate=ora("Creating source directory").start();
+var createSourceDirectory;
+if(process.env?.DRY_RUN=="yes") {
+  srcCreate.warn("Not creating a directory (Dry run)");
+}
+else {
+  try {
+    createSourceDirectory=fs.mkdirSync(baseDir,{recursive: true});
+    srcCreate.succeed(`Created ${createSourceDirectory}`);
+  }
+  catch(e) {
+    srcCreate.fail(`We encountered an error: ${e.message}`);
+  }
+}
