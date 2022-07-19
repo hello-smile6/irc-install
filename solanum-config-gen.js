@@ -360,13 +360,13 @@ serverhide {
 dnsbl {
 	host = "rbl.efnetrbl.org";
 	type = ipv4;
-	reject_reason = "${nick}, your IP (${ip}) is listed in EFnet's RBL. For assistance, see http://efnetrbl.org/?i=${ip}";
+	reject_reason = "\${nick}, your IP (\${ip}) is listed in EFnet's RBL. For assistance, see http://efnetrbl.org/?i=\${ip}";
 
 	/* Example of a blacklist that supports both IPv4 and IPv6 and using matches */
 #	host = "foobl.blacklist.invalid";
 #	type = ipv4, ipv6;
 #	matches = "4", "6", "127.0.0.10";
-#	reject_reason = "${nick}, your IP (${ip}) is listed in ${dnsbl-host} for some reason. In order to protect ${network-name} from abuse, we are not allowing connections listed in ${dnsbl-host} to connect";
+#	reject_reason = "\${nick}, your IP (\${ip}) is listed in \${dnsbl-host} for some reason. In order to protect \${network-name} from abuse, we are not allowing connections listed in \${dnsbl-host} to connect";
 };
 
 /* These are the OPM settings.
@@ -552,7 +552,7 @@ general {
 	pace_wait_simple = 1 second;
 	pace_wait = 10 seconds;
 	short_motd = no;
-	ping_cookie = ${args.ping_cookie};
+	ping_cookie = no;
 	connect_timeout = 30 seconds;
 	default_ident_timeout = 5;
 	disable_auth = no;
